@@ -1,0 +1,240 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Utilities</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Utilities (com.example.ecommerce.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Utilities</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.2%
+  </span>
+  <span class="absValue">
+    (1/46)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.utils;
+&nbsp;
+&nbsp;import java.io.StringReader;
+&nbsp;import java.io.StringWriter;
+&nbsp;import java.sql.SQLException;
+&nbsp;import javax.xml.transform.stream.StreamSource;
+&nbsp;
+&nbsp;import org.springframework.dao.DataAccessException;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.web.client.HttpClientErrorException;
+&nbsp;import org.springframework.web.client.ResourceAccessException;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import jakarta.xml.bind.JAXBContext;
+&nbsp;import jakarta.xml.bind.JAXBException;
+&nbsp;import jakarta.xml.bind.Marshaller;
+&nbsp;import jakarta.xml.bind.Unmarshaller;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+&nbsp;public class Utilities {
+&nbsp;
+&nbsp;    public &lt;T&gt; String objectToJson(T item) {
+<b class="nc">&nbsp;        return new Gson().toJson(item).replace(&#39;\t&#39;, &#39;_&#39;).replace(&#39;\n&#39;, &#39;_&#39;).replace(&#39;\r&#39;, &#39;_&#39;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public &lt;T&gt; T jsonToObject(String json, Class&lt;?&gt; clazz) {
+<b class="nc">&nbsp;        return (T) new Gson().fromJson(json, clazz);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public &lt;T&gt; String marshall(T soapRequest) throws JAXBException {
+<b class="nc">&nbsp;        JAXBContext jaxbContext = JAXBContext.newInstance(soapRequest.getClass());</b>
+<b class="nc">&nbsp;        Marshaller marshaller = jaxbContext.createMarshaller();</b>
+<b class="nc">&nbsp;        StringWriter writer = new StringWriter();</b>
+<b class="nc">&nbsp;        marshaller.setProperty(Marshaller.JAXB_ENCODING, &quot;UTF-8&quot;);</b>
+<b class="nc">&nbsp;        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);</b>
+<b class="nc">&nbsp;        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);</b>
+<b class="nc">&nbsp;        marshaller.marshal(soapRequest, writer);</b>
+<b class="nc">&nbsp;        return writer.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+&nbsp;    public &lt;T&gt; T unmarshall(String xml, Class&lt;?&gt; clazz) throws JAXBException {
+<b class="nc">&nbsp;        JAXBContext jaxbContext = JAXBContext.newInstance(clazz);</b>
+<b class="nc">&nbsp;        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();</b>
+<b class="nc">&nbsp;        StreamSource streamSource = new StreamSource(new StringReader(xml));</b>
+<b class="nc">&nbsp;        return (T) jaxbUnmarshaller.unmarshal(streamSource);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean retryOnException(Throwable ex, String name) {
+&nbsp;        boolean result;
+&nbsp;
+<b class="nc">&nbsp;        if (ex instanceof HttpClientErrorException httpEx) {</b>
+<b class="nc">&nbsp;            result = retryValidateException(httpEx.getStatusCode().value(), name);</b>
+<b class="nc">&nbsp;        } else if (ex instanceof DataAccessException databaseEx) {</b>
+<b class="nc">&nbsp;            if (databaseEx.getRootCause() instanceof SQLException sqlEx) {</b>
+<b class="nc">&nbsp;                result = retryValidateException(sqlEx.getErrorCode(), name);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                result = false;</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            result = false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean circuitBreakerOnException(Throwable ex, String name, boolean flagEnabled) {
+&nbsp;        boolean result;
+&nbsp;
+<b class="nc">&nbsp;        if (flagEnabled) {</b>
+<b class="nc">&nbsp;            if (ex instanceof HttpClientErrorException httpEx) {</b>
+<b class="nc">&nbsp;                result = circuitbreakerHttpClientException(httpEx.getStatusCode().value(), name);</b>
+<b class="nc">&nbsp;            } else if (ex instanceof ResourceAccessException) {</b>
+<b class="nc">&nbsp;                result = true;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                result = false;</b>
+&nbsp;            }
+&nbsp;        } else {
+<b class="nc">&nbsp;            result = false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean retryValidateException(int code, String name) {
+&nbsp;        boolean result;
+&nbsp;
+<b class="nc">&nbsp;        if (name.equals(Constants.RESILIENCE4J_SSO)) {</b>
+<b class="nc">&nbsp;            result = validateCodeExceptionResilence(code, HttpStatus.INTERNAL_SERVER_ERROR.value());</b>
+<b class="nc">&nbsp;        } else if (name.equals(Constants.RESILIENCE4J_PGSQL)) {</b>
+<b class="nc">&nbsp;            result = validateCodeExceptionResilence(code, 40000);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            result = false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean circuitbreakerHttpClientException(int codeStatusHttp, String name) {
+&nbsp;        boolean result;
+&nbsp;
+<b class="nc">&nbsp;        if (name.equals(Constants.RESILIENCE4J_SSO)) {</b>
+<b class="nc">&nbsp;            result = validateCodeExceptionResilence(codeStatusHttp, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.SERVICE_UNAVAILABLE.value());</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            result = false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private boolean validateCodeExceptionResilence(int code, Integer... codes) {
+<b class="nc">&nbsp;        boolean result = false;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int idx = 0; idx &lt; codes.length; idx++) {</b>
+<b class="nc">&nbsp;            if (code == codes[idx]) {</b>
+<b class="nc">&nbsp;                result = true;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>

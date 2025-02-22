@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Constants</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Constants (com.example.ecommerce.utils)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Constants</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.utils;
+&nbsp;
+&nbsp;public class Constants {
+&nbsp;
+&nbsp;    private Constants() {}
+&nbsp;
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    /***************** CODES AND MESSAGES FOR APPLICATION RESPONSES ****************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;
+&nbsp;    /************** RESPONSES 200 *************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_SUCCESS = 0;
+&nbsp;    public static final String MSJE_READ_SUCCESS = &quot;The service retrieved the records successfully&quot;;
+&nbsp;    public static final String MSJE_SAVE_SUCCESS = &quot;The service saved the record successfully&quot;;
+&nbsp;    public static final String MSJE_UPDATE_SUCCESS = &quot;The service updated the record successfully&quot;;
+&nbsp;    public static final String MSJE_DELETE_SUCCESS = &quot;The service deleted the record successfully&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 400 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_REQUEST_INVALID = 100;
+&nbsp;    public static final String MSJE_ERROR_REQUEST_INVALID = &quot;The client request is invalid&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 401 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_CLIENT_UNAUTHORIZED = 101;
+&nbsp;    public static final String MSJE_ERROR_CLIENT_UNAUTHORIZED = &quot;You are not authorized to access this resource&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 403 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_CLIENT_FORBIDDEN = 102;
+&nbsp;
+&nbsp;    /************** RESPONSES 404 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_NOT_FOUND_PATH = 104;
+&nbsp;    public static final String MSJE_ERROR_NOT_FOUND_PATH = &quot;The requested resource was not found&quot;;
+&nbsp;
+&nbsp;    public static final int CODE_ERROR_NOT_FOUND_INFO = 105;
+&nbsp;    public static final String MSJE_ERROR_READ_DATABASE = &quot;Error retrieving information&quot;;
+&nbsp;    public static final String MSJE_NOT_FOUND_READ_DATABASE = &quot;No information found&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 405 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_METHOD_NOT_ALLOWED = 106;
+&nbsp;    public static final String MSJE_ERROR_METHOD_NOT_ALLOWED = &quot;Method not allowed&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 408 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_REQUEST_TIMEOUT = 107;
+&nbsp;    public static final String MSJE_ERROR_REQUEST_TIMEOUT = &quot;The request did not respond within the established time&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 409 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_CONFLICT = 108;
+&nbsp;    public static final String MSJE_ERROR_CONFLICT = &quot;The entity&#39;s state does not allow the operation&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 422 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_UNPROCESSABLE_ENTITY = 109;
+&nbsp;    public static final String MSJE_ERROR_UNPROCESSABLE_ENTITY = &quot;The Content Type is not processable by the service&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 429 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_TOO_MANY_REQUESTS = 110;
+&nbsp;    public static final String MSJE_ERROR_TOO_MANY_REQUESTS = &quot;The number of allowed requests has been exceeded&quot;;
+&nbsp;
+&nbsp;    /************** RESPONSES 500 **************************************************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final int CODE_ERROR_SERVICE_INTERNAL = 111;
+&nbsp;    public static final String MSJE_ERROR_SERVICE_INTERNAL = &quot;The service encountered an uncontrolled error&quot;;
+&nbsp;    public static final String MSJE_ERROR_SAVE_DATABASE = &quot;Error saving the information&quot;;
+&nbsp;    public static final String MSJE_ERROR_UPDATE_DATABASE = &quot;Error updating the information&quot;;
+&nbsp;    public static final String MSJE_ERROR_DELETE_DATABASE = &quot;Error deleting the information&quot;;
+&nbsp;
+&nbsp;    public static final int CODE_ERROR_SERVICE_UNAVAILABLE = 113;
+&nbsp;    public static final String MSJE_ERROR_SERVICE_UNAVAILABLE = &quot;The service is unavailable&quot;;
+&nbsp;
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    /************************* RESILIENCE4J (RETRIES, CIRCUIT BREAKERS) ************************************/
+&nbsp;    /*******************************************************************************************************/
+&nbsp;    public static final String RESILIENCE4J_SSO = &quot;sso&quot;;
+&nbsp;    public static final String RESILIENCE4J_MONGODB = &quot;mongodb&quot;;
+&nbsp;    public static final String RESILIENCE4J_PGSQL = &quot;pgsql&quot;;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>

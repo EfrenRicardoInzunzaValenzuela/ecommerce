@@ -1,0 +1,154 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomCorsFilter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.configs</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomCorsFilter (com.example.ecommerce.configs)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomCorsFilter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.configs;
+&nbsp;
+&nbsp;import com.example.ecommerce.dto.TransactionService;
+&nbsp;import jakarta.annotation.Resource;
+&nbsp;import jakarta.servlet.FilterChain;
+&nbsp;import jakarta.servlet.ServletException;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import jakarta.servlet.http.HttpServletResponse;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.web.cors.*;
+&nbsp;import org.springframework.web.filter.*;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;@Component
+<b class="fc">&nbsp;public class CustomCorsFilter extends OncePerRequestFilter {</b>
+&nbsp;    @Resource(name = &quot;getTransactionService&quot;)
+&nbsp;    private TransactionService transactionservice;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+<b class="nc">&nbsp;        this.transactionservice.startTimeRequest();</b>
+<b class="nc">&nbsp;        CorsConfiguration corsConfiguration = new CorsConfiguration();</b>
+<b class="nc">&nbsp;        corsConfiguration.addAllowedOrigin(request.getHeader(&quot;Origin&quot;));</b>
+<b class="nc">&nbsp;        corsConfiguration.addAllowedMethod(&quot;GET, POST, PUT, DELETE&quot;);</b>
+<b class="nc">&nbsp;        corsConfiguration.addAllowedHeader(&quot;Access-Control-Allow-Origin, Access-Control-Allow-Headers, Access-Control-Allow-Methods, &quot; +</b>
+&nbsp;                &quot;Accept, Authorization, Content-Type, Method, Origin, X-Forwarded-For, X-Real-IP&quot;);
+<b class="nc">&nbsp;        corsConfiguration.setAllowCredentials(true);</b>
+<b class="nc">&nbsp;        corsConfiguration.setMaxAge(3600L);</b>
+&nbsp;
+<b class="nc">&nbsp;        CorsProcessor corsProcessor = new DefaultCorsProcessor();</b>
+<b class="nc">&nbsp;        corsProcessor.processRequest(corsConfiguration, request, response);</b>
+<b class="nc">&nbsp;        if (CorsUtils.isCorsRequest(request)) {</b>
+<b class="nc">&nbsp;            corsProcessor.processRequest(corsConfiguration, request, response);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        filterChain.doFilter(request, response);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>

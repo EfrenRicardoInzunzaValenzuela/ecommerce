@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DistributedTransactions</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.configs</a>
+</div>
+
+<h1>Coverage Summary for Class: DistributedTransactions (com.example.ecommerce.configs)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DistributedTransactions</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DistributedTransactions$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.configs;
+&nbsp;
+&nbsp;import java.util.ArrayDeque;
+&nbsp;import java.util.Deque;
+&nbsp;
+&nbsp;import org.springframework.orm.jpa.JpaTransactionManager;
+&nbsp;import org.springframework.transaction.TransactionStatus;
+&nbsp;import org.springframework.transaction.support.DefaultTransactionDefinition;
+&nbsp;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+<b class="nc">&nbsp;@NoArgsConstructor</b>
+&nbsp;public class DistributedTransactions {
+&nbsp;    private Deque&lt;DefaultTransactionDefinition&gt; defaultTransactionDefinitionList;
+&nbsp;    private Deque&lt;JpaTransactionManager&gt; dataSourceTransactionManagerList;
+&nbsp;    private Deque&lt;TransactionStatus&gt; transactionStatusList;
+&nbsp;
+&nbsp;    public void createTransactionDefinition(String transactionID, String... transactionsTags) {
+<b class="nc">&nbsp;        defaultTransactionDefinitionList = new ArrayDeque&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (String tag : transactionsTags) {</b>
+<b class="nc">&nbsp;            DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();</b>
+<b class="nc">&nbsp;            transactionDefinition.setName(String.format(&quot;%s_%s&quot;, tag, transactionID));</b>
+<b class="nc">&nbsp;            defaultTransactionDefinitionList.add(transactionDefinition);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void beginTransactions(JpaTransactionManager... transactionsmanger) throws IllegalStateException {
+<b class="nc">&nbsp;        if (transactionsmanger.length != defaultTransactionDefinitionList.size()) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Error starting transactions. The number of transactions to handle is incorrect&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        transactionStatusList = new ArrayDeque&lt;&gt;();</b>
+<b class="nc">&nbsp;        dataSourceTransactionManagerList = new ArrayDeque&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (JpaTransactionManager itemDataSource : transactionsmanger) {</b>
+<b class="nc">&nbsp;            DefaultTransactionDefinition transactionDefinition = defaultTransactionDefinitionList.removeFirst();</b>
+&nbsp;
+<b class="nc">&nbsp;            TransactionStatus transactionStatus = itemDataSource.getTransaction(transactionDefinition);</b>
+<b class="nc">&nbsp;            transactionStatusList.push(transactionStatus);</b>
+<b class="nc">&nbsp;            dataSourceTransactionManagerList.push(itemDataSource);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void commitTransactions() {
+<b class="nc">&nbsp;        if (transactionStatusList != null) {</b>
+<b class="nc">&nbsp;            while (!transactionStatusList.isEmpty()) {</b>
+<b class="nc">&nbsp;                TransactionStatus transactionStatus = transactionStatusList.removeFirst();</b>
+<b class="nc">&nbsp;                JpaTransactionManager transactionManager = dataSourceTransactionManagerList.removeFirst();</b>
+<b class="nc">&nbsp;                transactionManager.commit(transactionStatus);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        clearTransactionsList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void rollbackTransactions() {
+<b class="nc">&nbsp;        if (transactionStatusList != null) {</b>
+<b class="nc">&nbsp;            while (!transactionStatusList.isEmpty()) {</b>
+<b class="nc">&nbsp;                TransactionStatus transactionStatus = transactionStatusList.removeFirst();</b>
+<b class="nc">&nbsp;                JpaTransactionManager transactionManager = dataSourceTransactionManagerList.removeFirst();</b>
+<b class="nc">&nbsp;                transactionManager.rollback(transactionStatus);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        clearTransactionsList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void clearTransactionsList() {
+<b class="nc">&nbsp;        if (dataSourceTransactionManagerList != null) {</b>
+<b class="nc">&nbsp;            dataSourceTransactionManagerList.clear();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (transactionStatusList != null) {</b>
+<b class="nc">&nbsp;            transactionStatusList.clear();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>

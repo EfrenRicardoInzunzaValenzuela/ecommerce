@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderItemModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.model</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderItemModel (com.example.ecommerce.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderItemModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (34/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.model;
+&nbsp;
+&nbsp;import com.example.ecommerce.dto.requests.RequestUpdateOrderItem;
+&nbsp;import com.example.ecommerce.entities.Order;
+&nbsp;import com.example.ecommerce.entities.OrderItem;
+&nbsp;import com.example.ecommerce.entities.Product;
+&nbsp;import com.example.ecommerce.exception.RepositoryException;
+&nbsp;import com.example.ecommerce.repository.OrderItemRepository;
+&nbsp;import com.example.ecommerce.repository.OrderRepository;
+&nbsp;import com.example.ecommerce.repository.ProductRepository;
+&nbsp;import com.example.ecommerce.utils.Constants;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Component
+&nbsp;public class OrderItemModel {
+&nbsp;
+&nbsp;    private final OrderItemRepository orderItemRepository;
+&nbsp;    private final ProductRepository productRepository;
+&nbsp;    private final OrderRepository orderRepository;
+&nbsp;
+<b class="fc">&nbsp;    public OrderItemModel(OrderItemRepository orderItemRepository, ProductRepository productRepository, OrderRepository orderRepository) {</b>
+<b class="fc">&nbsp;        this.orderItemRepository = orderItemRepository;</b>
+<b class="fc">&nbsp;        this.productRepository = productRepository;</b>
+<b class="fc">&nbsp;        this.orderRepository = orderRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;OrderItem&gt; getAllOrderItems() {
+<b class="fc">&nbsp;        return orderItemRepository.findByDeletedAtIsNull();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public OrderItem getOrderItemById(Long id) {
+<b class="fc">&nbsp;        return orderItemRepository.findFirstById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public OrderItem createOrderItem(OrderItem orderItem) {
+<b class="fc">&nbsp;        Order order = orderRepository.findFirstByIdAndDeletedAtIsNull(orderItem.getOrderId());</b>
+<b class="fc">&nbsp;        Product product = productRepository.findFirstByIdAndDeletedAtIsNull(orderItem.getProductId());</b>
+&nbsp;
+<b class="fc">&nbsp;        if (order == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_REQUEST_INVALID, Constants.MSJE_ERROR_SAVE_DATABASE, &quot;OrderId does not exist&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (product == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_REQUEST_INVALID, Constants.MSJE_ERROR_SAVE_DATABASE, &quot;ProductId does not exist&quot;);</b>
+&nbsp;        }
+&nbsp;        //Validar disponibilidad
+&nbsp;        //remover cantidad de la existencia del producto
+&nbsp;        //retornar el inventario en caso de ser diferente producto
+<b class="fc">&nbsp;        orderItem.setPriceAtTheTimeOfSale(product.getPrice());</b>
+<b class="fc">&nbsp;        return orderItemRepository.save(orderItem);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public OrderItem updateOrderItem(Long id, RequestUpdateOrderItem orderItem) {
+<b class="fc">&nbsp;        Order order = orderRepository.findFirstByIdAndDeletedAtIsNull(orderItem.getOrderId());</b>
+<b class="fc">&nbsp;        Product product = productRepository.findFirstByIdAndDeletedAtIsNull(orderItem.getProductId());</b>
+<b class="fc">&nbsp;        OrderItem existingOrderItem = orderItemRepository.findFirstByIdAndDeletedAtIsNull(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (order == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_REQUEST_INVALID, Constants.MSJE_ERROR_SAVE_DATABASE, &quot;OrderId does not exist&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (product == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_REQUEST_INVALID, Constants.MSJE_ERROR_SAVE_DATABASE, &quot;ProductId does not exist&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (existingOrderItem == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_NOT_FOUND_INFO, Constants.MSJE_NOT_FOUND_READ_DATABASE, &quot;orderItemId does not exist&quot;);</b>
+&nbsp;        }
+&nbsp;        //Validar disponibilidad
+&nbsp;        //remover cantidad de la existencia
+&nbsp;        //retornar el inventario en caso de ser diferente producto
+<b class="fc">&nbsp;        existingOrderItem.setOrderId(orderItem.getOrderId());</b>
+<b class="fc">&nbsp;        existingOrderItem.setProductId(orderItem.getProductId());</b>
+<b class="fc">&nbsp;        existingOrderItem.setQuantity(orderItem.getQuantity());</b>
+<b class="fc">&nbsp;        existingOrderItem.setPriceAtTheTimeOfSale(product.getPrice());</b>
+<b class="fc">&nbsp;        return orderItemRepository.save(existingOrderItem);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public OrderItem deleteOrderItem(Long id) {
+<b class="fc">&nbsp;        OrderItem existingOrderItem = orderItemRepository.findFirstByIdAndDeletedAtIsNull(id);</b>
+<b class="fc">&nbsp;        if (existingOrderItem == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_NOT_FOUND_INFO, Constants.MSJE_ERROR_DELETE_DATABASE, &quot;&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());</b>
+<b class="fc">&nbsp;        existingOrderItem.setDeletedAt(currentTimestamp);</b>
+<b class="fc">&nbsp;        return orderItemRepository.save(existingOrderItem);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>

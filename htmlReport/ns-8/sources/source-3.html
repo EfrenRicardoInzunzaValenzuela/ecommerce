@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ecommerce.model</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductModel (com.example.ecommerce.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ecommerce.model;
+&nbsp;
+&nbsp;import com.example.ecommerce.dto.requests.RequestUpdateProduct;
+&nbsp;import com.example.ecommerce.entities.Product;
+&nbsp;import com.example.ecommerce.exception.RepositoryException;
+&nbsp;import com.example.ecommerce.repository.ProductRepository;
+&nbsp;import com.example.ecommerce.utils.Constants;
+&nbsp;import org.springframework.dao.DataAccessException;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Component
+&nbsp;public class ProductModel {
+&nbsp;
+&nbsp;    private final ProductRepository productRepository;
+&nbsp;
+<b class="fc">&nbsp;    public ProductModel(ProductRepository productRepository) {</b>
+<b class="fc">&nbsp;        this.productRepository = productRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Product&gt; getAllProducts() throws DataAccessException {
+<b class="fc">&nbsp;        return productRepository.findByDeletedAtIsNull();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Product getProductById(Long id) throws DataAccessException {
+<b class="fc">&nbsp;        return productRepository.findFirstById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Product createProduct(Product product) throws DataAccessException {
+<b class="fc">&nbsp;        return productRepository.save(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Product updateProduct(Long id, RequestUpdateProduct request) throws DataAccessException {
+<b class="fc">&nbsp;        Product existingProduct = productRepository.findFirstByIdAndDeletedAtIsNull(id);</b>
+<b class="fc">&nbsp;        if (existingProduct == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_NOT_FOUND_INFO, Constants.MSJE_ERROR_UPDATE_DATABASE, &quot;&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        existingProduct.setName(request.getName());</b>
+<b class="fc">&nbsp;        existingProduct.setDescription(request.getDescription());</b>
+<b class="fc">&nbsp;        existingProduct.setPrice(request.getPrice());</b>
+<b class="fc">&nbsp;        return productRepository.save(existingProduct);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Product deleteProduct(Long id) throws DataAccessException {
+<b class="fc">&nbsp;        Product existingProduct = productRepository.findFirstByIdAndDeletedAtIsNull(id);</b>
+<b class="fc">&nbsp;        if (existingProduct == null) {</b>
+<b class="fc">&nbsp;            throw new RepositoryException(Constants.CODE_ERROR_NOT_FOUND_INFO, Constants.MSJE_ERROR_DELETE_DATABASE, &quot;&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());</b>
+<b class="fc">&nbsp;        existingProduct.setDeletedAt(currentTimestamp);</b>
+<b class="fc">&nbsp;        return productRepository.save(existingProduct);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-22 12:07</div>
+</div>
+</body>
+</html>
