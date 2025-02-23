@@ -1,35 +1,39 @@
 # E-Commerce Platform API
 
-This is a SpringBoot application that provides a RESTful API for managing products, orders, and order items in an e-commerce platform. The application is built using Java 21, SpringBoot, Spring Data JPA, and runs in a Docker container.
+This is a **SpringBoot** application that provides a **RESTful API** for managing products, orders, and order items in an e-commerce platform. Built with **Java 21**, **Spring Data JPA**, and **Docker**, this application is designed to be scalable, maintainable, and easy to deploy.
 
-This API implements soft delete for all elements (products, orders, and order items) to maintain historical records and ensure data integrity. Instead of permanently removing records from the database, a deleted flag or status is used to mark entries as inactive. This approach allows the system to retain historical data for auditing and reporting purposes while keeping the active dataset clean and efficient. Additionally, the API is documented using OpenAPI 3.1, and a Swagger UI interface is provided for easy visualization and interaction with the API endpoints. Developers can access the Swagger UI at http://localhost:8080/swagger-ui.html to explore the API's functionality, test endpoints, and review the schema. To ensure code quality and reliability, the application includes a comprehensive suite of unit and integration tests written with JUnit and Mockito. A code coverage report is generated during the testing process, providing insights into the percentage of code covered by tests and helping to identify areas that may require additional testing or improvement. This combination of soft delete, Swagger UI, and rigorous testing ensures a robust, maintainable, and user-friendly API.
+## Key Features
+
+- **Soft Delete Functionality**: Instead of permanently deleting records, the API uses a `deleted` flag to mark entries as inactive. This ensures historical data is preserved for auditing and reporting purposes while keeping the active dataset clean and efficient.
+- **OpenAPI 3.0 Documentation**: The API is fully documented using **OpenAPI 3.1**, and a **Swagger UI** interface is provided for easy exploration and testing of endpoints. Access the Swagger UI at:  
+  [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- **Comprehensive Testing**: The application includes a suite of **unit** and **integration tests** written with **JUnit** and **Mockito**. A **code coverage report** is generated during testing, providing insights into the percentage of code covered by tests. The report can be viewed at:  
+  `htmlReport/index.html` (open with any browser).
+- **Docker Support**: The application is containerized using **Docker**, making it easy to deploy and run in any environment.
 
 ## Requirements
 
-- Maven
-- Java 21
-- Docker
-- PostgreSQL
+- **Maven** (for building the project)
+- **Java 21** (JDK 21)
+- **Docker** (for containerization)
+- **PostgreSQL** (as the database)
 
 ## Setup
 
-1. **Clone the repository:**
+### 1. Clone the Repository
 
-   ```bash
-   git clone https://github.com/your-username/e-commerce-platform.git
-   cd e-commerce-platform
+```bash
+git clone https://github.com/EfrenRicardoInzunzaValenzuela/ecommerce.git
+cd ecommerce 
+```
+### 2. Build the Docker Image
 
-2. **Generate Docker Image**
+```bash
+docker build -t my-spring-app .
+```
 
-   execute this on the project folder 
+### 3. Clone the Repository
 
-   ```bash
-   docker build -t my-spring-app .
-
-3. **Deployment**
-
-  execute this on the project folder 
-
-   ```bash
-   docker-compose up -d
-   
+```bash
+docker-compose up -d
+```
